@@ -1,11 +1,7 @@
-import subprocess
-import termios
 import time
-import tty
-import sys
 import ev3dev.ev3 as ev3
-from random import randint
 
+# set the motor pin
 motor_left = ev3.LargeMotor("outC")
 motor_right = ev3.LargeMotor("outB")
 motor_a = ev3.MediumMotor("outA")
@@ -28,9 +24,8 @@ def straight(**kwargs):
         motor_right.run_timed(
             speed_sp=kwargs['sing']*900, time_sp=time_sp, stop_action='brake')
     else:
-        motor_left.run_forever(speed_sp=-900)
-        motor_right.run_forever(speed_sp=-900)
-    # print(motor_left.position)
+        motor_left.run_forever(speed_sp=kwargs['sing']*900)
+        motor_right.run_forever(speed_sp=kwargs['sing']*900)
 
 
 def turn(**kwargs):
@@ -64,8 +59,6 @@ def backflip():
     motor_right.run_to_rel_pos(
         position_sp=-1250, speed_sp=900, stop_action='brake')
 
-# function for stopping the movement
-
 
 def stop(**kwargs):
     motor_left.stop()
@@ -83,7 +76,6 @@ def hello():
 
 
 def go(**kwargs):
-    print(kwargs.keys())
     kwargs['sing'] = -1
     if 'direction' in kwargs.keys():
         if kwargs['direction'] == 'straight':
@@ -113,29 +105,3 @@ def put(**kwargs):
     stop()
     motor_left.wait_until_not_moving()
     motor_a.run_to_abs_pos(position_sp=-400, speed_sp=300)
-
-
-def test(**kwargs):
-    print('start routine')
-    put()
-    straight(meter=30)
-    motor_left.wait_until_not_moving()
-    rotateLeft()
-    motor_left.wait_until_not_moving()
-    straight(meter=20)
-    motor_left.wait_until_not_moving()
-    print('now i pick the obj')
-    pick()
-    time.sleep(1)
-    motor_a.wait_until_not_moving()
-    behind()
-    motor_left.wait_until_not_moving()
-    straight(meter=20)
-    motor_left.wait_until_not_moving()
-    rotateRight()
-    motor_left.wait_until_not_moving()
-    straight(meter=30)
-    motor_left.wait_until_not_moving()
-    put()
-    time.sleep(1)
-    print('end routine')
