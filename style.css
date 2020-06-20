@@ -1,0 +1,29 @@
+QMainWindow {
+  width: 50px;
+  height: 400px;
+}
+
+QLabel {
+  min-width: 110px;
+  padding-left: 10px;
+}
+
+QPushButton {
+  padding: 20px 20px 20px 20px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+QLineEdit {
+  min-width: 200px;
+  border: 1px solid #ccc;
+  height: 30px;
+  padding-left: 10px;
+}
+
+QNumberEdit {
+  min-width: 200px;
+  border: 1px solid #ccc;
+  height: 30px;
+  padding-left: 10px;
+}

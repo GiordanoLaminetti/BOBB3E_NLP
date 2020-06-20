@@ -1,8 +1,6 @@
 import argparse
-from wit import Wit
-import json
-import paho.mqtt.client as mqtt
 import speech_recognition as sr
+from client_Action import ClientAction
 
 parser = argparse.ArgumentParser(
     description='client message for the action recognition')
@@ -21,29 +19,15 @@ parser.add_argument('-v', '--voice', action='store_true',
 
 args = parser.parse_args()
 
-# Initialize the client class
-client_mqtt = mqtt.Client()
-
-# initialize the spechrecognition
-if(args.voice):
-    r = sr.Recognizer()
-    speech = sr.Microphone()
-
-with open(args.file, 'r') as File:
-    token = File.readline()
-    client_wit = Wit(token)
-
+clientAction = ClientAction(args.file, args.ip, args.port)
 
 while True:
     # convert the audio to text
     if(args.voice):
         input('press enter when you are ready to send a message')
-        with speech as source:
-            print("say something!!….")
-            audio = r.adjust_for_ambient_noise(source)
-            audio = r.listen(source)
+        print("say something!!….")
         try:
-            msg = r.recognize_wit(audio, key=token)
+            resp = clientAction.AudioMessage()
         except sr.UnknownValueError:
             print("could not understand audio")
         except sr.RequestError as e:
@@ -52,26 +36,22 @@ while True:
             print(" Error : token Error ")
             break
     else:
-        msg = input("insert mssage here: ")
-
-    print(msg)
-    try:
-        # send the input to the Wit.ai net to recognize the action
-        resp = client_wit.message(msg)
-    except:
-        print(" Error : token Error ")
-        break
+        try:
+            msg = input("insert mssage here: ")
+            resp = clientAction.TextMessage(msg)
+        except:
+            print(" Error : token Error ")
+            break
 
     # Parse the output from Wit.ai
-    print(resp)
-    msg_mqtt = dict()
+    msgMqtt = dict()
     for key, value in resp['entities'].items():
-        msg_mqtt[key] = value[0]['value']
+        msgMqtt[key] = value[0]['value']
 
     # Send the action to BOBB3E
+    print('sent message to BOBB3E ')
     try:
-        client_mqtt.connect(args.ip, args.port, 1)
-        client_mqtt.publish("Action", json.dumps(msg_mqtt))
-        client_mqtt.disconnect()
+
+        clientAction.SendMessage(msgMqtt)
     except:
         print("Error : can't  connect with mosquitto server ")
