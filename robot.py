@@ -90,18 +90,20 @@ def go(**kwargs):
 
 
 def pick(**kwargs):
-    go(**kwargs)
-    while(ir.proximity > 18):
-        pass
-    stop()
-    motor_left.wait_until_not_moving()
+    if 'direction' in kwargs.keys():
+        go(**kwargs)
+        while ir.proximity > 18:
+            pass
+        stop()
+        motor_left.wait_until_not_moving()
     motor_a.run_to_abs_pos(position_sp=400, speed_sp=300)
 
 
 def put(**kwargs):
-    go(**kwargs)
-    while(ir.proximity > 18
-        pass
-    stop()
-    motor_left.wait_until_not_moving()
+    if 'direction' in kwargs.keys():
+        go(**kwargs)
+        while ir.proximity > 18:
+            pass
+        stop()
+        motor_left.wait_until_not_moving()
     motor_a.run_to_abs_pos(position_sp=-400, speed_sp=300)
