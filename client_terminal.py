@@ -54,4 +54,4 @@ while True:
 
         clientAction.SendMessage(msgMqtt)
     except:
-        print("Error : can't  connect with mosquitto server ")
+        print("Error : can't  connect with mosquitto broker ")

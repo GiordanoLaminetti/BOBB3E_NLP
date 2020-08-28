@@ -48,4 +48,4 @@ if __name__ == "__main__":
 
         client.loop_forever()
     except:
-        print("can't connect to the server")
+        print("can't connect to the broker")

@@ -9,13 +9,14 @@ ir = ev3.InfraredSensor()
 
 
 def straight(**kwargs):
+    print('straight', kwargs)
     if 'distance' in kwargs.keys():
         # convert meter in position
         position_sp = kwargs['distance']*60
         motor_left.run_to_rel_pos(
-            speed_sp=kwargs['sing']*900, position_sp=position_sp, stop_action='brake')
+            speed_sp=900, position_sp=kwargs['sing']*position_sp, stop_action='brake')
         motor_right.run_to_rel_pos(
-            speed_sp=kwargs['sing']*900, position_sp=position_sp, stop_action='brake')
+            speed_sp=900, position_sp=kwargs['sing']*position_sp, stop_action='brake')
     elif 'duration' in kwargs.keys():
         # convert time to millisecond
         time_sp = kwargs['duration'] * 1000
@@ -29,6 +30,7 @@ def straight(**kwargs):
 
 
 def turn(**kwargs):
+    print('turn', kwargs)
     if kwargs['direction'] == 'left':
         rotateLeft()
     elif kwargs['direction'] == 'right':
@@ -77,6 +79,7 @@ def hello():
 
 def go(**kwargs):
     kwargs['sing'] = -1
+    print('go', kwargs)
     if 'direction' in kwargs.keys():
         if kwargs['direction'] == 'straight':
             straight(**kwargs)
@@ -90,6 +93,7 @@ def go(**kwargs):
 
 
 def pick(**kwargs):
+    print('pick', kwargs)
     if 'direction' in kwargs.keys():
         go(**kwargs)
         while ir.proximity > 18:
@@ -100,6 +104,7 @@ def pick(**kwargs):
 
 
 def put(**kwargs):
+    print('put', kwargs)
     if 'direction' in kwargs.keys():
         go(**kwargs)
         while ir.proximity > 18:

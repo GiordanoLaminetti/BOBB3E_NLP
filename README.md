@@ -76,10 +76,4 @@ python3 client_terminal.py
 
 by default it use the tokenfile _token_ and the ip _ev3dev.local_ and port _1883_ of the borker , you can change this via **-i**, **-p** and **-f** options, usign the **-v** you can use your voice to tell action.
 
-to run in a GUI mode you run
 
-```
-python3 client_GUI.py
-```
-
-and follow the istruction on the GUI
